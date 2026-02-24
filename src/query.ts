@@ -104,12 +104,20 @@ export function buildSearchParams<
   const queryString = qs.stringify(queryObj, {
     arrayFormat: 'comma',
     encode: true,
-    skipNulls: true,
     serializeDate: (date: Date) => date.toISOString(),
     filter: (prefix, value) => {
       // Convert sort array to string format
       if (prefix === 'sort' && Array.isArray(value)) {
         return buildSortString(value);
+      }
+      // Convert null to string "null" for operator fields (e.g., lostAt[eq]=null)
+      // This allows filtering for null values in the database
+      if (value === null && /\[(:?eq|ne|gt|gte|lt|lte|in|nin|exists|all)\]$/.test(prefix)) {
+        return 'null';
+      }
+      // Skip null values for non-operator fields
+      if (value === null) {
+        return undefined;
       }
       return value;
     },
