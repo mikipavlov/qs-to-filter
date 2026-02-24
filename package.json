@@ -31,6 +31,7 @@
     "dist"
   ],
   "scripts": {
+    "prepare": "pnpm build",
     "build": "pkgroll --target=node18",
     "dev": "pkgroll --watch",
     "check": "biome check src",
