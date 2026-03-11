@@ -209,7 +209,9 @@ describe('parseQueryString', () => {
 describe('buildSearchParams', () => {
   it('should build search params with "in" operator', () => {
     const params = buildSearchParams({ urlSlug: { in: ['site1.com', 'site2.com'] } });
-    expect(params.toString()).toBe('urlSlug%5Bin%5D=site1.com%2Csite2.com');
+    expect(params.toString()).toBe(
+      'urlSlug%5Bin%5D%5B%5D=site1.com&urlSlug%5Bin%5D%5B%5D=site2.com'
+    );
   });
 
   it('should build search params with numeric operators', () => {
@@ -256,7 +258,9 @@ describe('buildSearchParams', () => {
         urlSlug: { in: ['site1.com', 'site2.com'] },
       },
     });
-    expect(params.toString()).toBe('origins%5BurlSlug%5D%5Bin%5D=site1.com%2Csite2.com');
+    expect(params.toString()).toBe(
+      'origins%5BurlSlug%5D%5Bin%5D%5B%5D=site1.com&origins%5BurlSlug%5D%5Bin%5D%5B%5D=site2.com'
+    );
   });
 
   it('should handle empty filter and options', () => {

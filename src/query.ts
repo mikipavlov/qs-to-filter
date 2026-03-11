@@ -100,9 +100,12 @@ export function buildSearchParams<
   // Merge filter and opts at the top level
   const queryObj: Record<string, unknown> = { ...filter, ...opts };
 
-  // Serialize the entire object with qs using bracket notation
+  // Serialize the entire object with qs using bracket notation.
+  // Using 'brackets' format so each array element gets its own query parameter.
+  // The 'comma' format breaks when URLSearchParams re-encodes commas as %2C,
+  // causing the parser to see one string instead of an array.
   const queryString = qs.stringify(queryObj, {
-    arrayFormat: 'comma',
+    arrayFormat: 'brackets',
     encode: true,
     serializeDate: (date: Date) => date.toISOString(),
     filter: (prefix, value) => {

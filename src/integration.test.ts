@@ -135,8 +135,10 @@ describe('Integration Tests', () => {
         },
       });
 
-      expect(params.toString()).toBe('origins%5BurlSlug%5D%5Bin%5D=site1.com%2Csite2.com');
-      // Decodes to: origins[urlSlug][in]=site1.com,site2.com
+      expect(params.toString()).toBe(
+        'origins%5BurlSlug%5D%5Bin%5D%5B%5D=site1.com&origins%5BurlSlug%5D%5Bin%5D%5B%5D=site2.com'
+      );
+      // Decodes to: origins[urlSlug][in][]=site1.com&origins[urlSlug][in][]=site2.com
     });
 
     it('should build URL params for deeply nested queries', () => {
@@ -164,7 +166,7 @@ describe('Integration Tests', () => {
       const decoded = decodeURIComponent(params.toString());
       expect(decoded).toContain('status=published');
       expect(decoded).toContain('couponCount[gte]=10');
-      expect(decoded).toContain('origins[urlSlug][in]=example.com');
+      expect(decoded).toContain('origins[urlSlug][in][]=example.com');
     });
   });
 
@@ -251,19 +253,11 @@ describe('Integration Tests', () => {
       expect(parsed).toEqual(original);
     });
 
-    it('should handle multi-value arrays (qs comma format limitation)', () => {
-      // Note: Multi-value arrays with comma format have a known round-trip limitation
-      // When serialized as `status[in]=a,b` and parsed back, qs treats it as single string
-      // This is expected behavior - use bracket format if exact round-trip is needed
+    it('should round-trip multi-value arrays correctly', () => {
       const original = { status: { in: ['active', 'pending'] } };
       const params = buildSearchParams(original);
-      const decoded = decodeURIComponent(params.toString());
+      const parsed = parseQueryString(params.toString());
 
-      // Verify serialization is correct
-      expect(decoded).toBe('status[in]=active,pending');
-
-      // Parsing from raw query string works correctly
-      const parsed = parseQueryString('status[in]=active,pending');
       expect(parsed).toEqual(original);
     });
   });
