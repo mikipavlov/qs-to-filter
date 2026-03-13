@@ -47,6 +47,9 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test:run
 
+      - name: Authenticate with npm (OIDC)
+        run: npm whoami
+
       - name: Configure Git
         run: |
           git config user.name github-actions[bot]
