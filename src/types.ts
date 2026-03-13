@@ -184,25 +184,25 @@ export type ArrayFilterValue<T> =
   | Partial<Pick<BaseFilterOperators<T[]>, 'eq' | 'ne' | 'exists'> & ArrayOperators<T>>;
 
 // ============================================
-// ADVANCED FILTER TYPES (Prisma-style)
+// ADVANCED FILTER TYPES (Logical operators)
 // ============================================
 
 /**
- * Where input with AND/OR/NOT logical operators
+ * Where input with and/or/not logical operators
  *
  * @example
  * const filter: WhereInput<User> = {
  *   status: { eq: 'active' },
- *   OR: [
+ *   or: [
  *     { age: { gte: 18 } },
  *     { role: { eq: 'admin' } }
  *   ]
  * };
  */
 export type WhereInput<T> = FilterObject<T> & {
-  AND?: WhereInput<T> | WhereInput<T>[];
-  OR?: WhereInput<T>[];
-  NOT?: WhereInput<T> | WhereInput<T>[];
+  and?: WhereInput<T> | WhereInput<T>[];
+  or?: WhereInput<T>[];
+  not?: WhereInput<T> | WhereInput<T>[];
 };
 
 // ============================================

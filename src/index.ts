@@ -34,6 +34,13 @@
  * // { status: 'published', price: { $gte: 10 } }
  *
  * @example
+ * // With PostgreSQL adapter
+ * import { buildPostgresFilter, buildPostgresSort } from 'qs-to-filter/postgres';
+ *
+ * const { sql, params } = buildPostgresFilter(filter);
+ * // sql: 'status = $1 AND price >= $2', params: ['published', 10]
+ *
+ * @example
  * // With schema validation (Zod adapter)
  * import { FilterValue, buildFilterSchema } from 'qs-to-filter/adapters/zod';
  * import { z } from 'zod';
@@ -155,3 +162,12 @@ export type {
   WithDashId,
   WithId,
 } from './types.js';
+
+// PostgreSQL adapter
+export {
+  buildPostgresFilter,
+  buildPostgresSort,
+  transformBracketToPostgresFilter,
+  BRACKET_TO_POSTGRES_OPERATOR,
+  type PostgresFilterOptions,
+} from './postgres.js';
