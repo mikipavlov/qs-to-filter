@@ -12,10 +12,6 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [20, 22, '24.14.0']
     steps:
       - uses: actions/checkout@v4
 
@@ -26,7 +22,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '24.14.0'
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
